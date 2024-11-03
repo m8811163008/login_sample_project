@@ -9,15 +9,30 @@ abstract class RemoteApi {
 
   Future<VerificationCode> fetchVericationCode(int phoneNumber);
 
-  Future<JsonWebToken> fetchJsonWebToken(int vericationCode);
+  Future<JsonWebToken> fetchJsonWebToken({
+    required int verificationCode,
+    required int phoneNumber,
+  });
 }
 
 class RemoteApiImpl implements RemoteApi {
   RemoteApiImpl();
 
   @override
-  Future<JsonWebToken> fetchJsonWebToken(int vericationCode) async {
-    final response = await http.get(UrlAddress.fetchJsonWebTokenUri);
+  Future<JsonWebToken> fetchJsonWebToken(
+      {required int verificationCode, required int phoneNumber}) async {
+    final body = PhoneNumberRequest(
+            phoneNumber: phoneNumber, verificationCode: verificationCode)
+        .toJson();
+    final response = await http.post(
+      UrlAddress.fetchJsonWebTokenUri,
+      body: body,
+      headers: {
+        'accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+    );
+
     if (response.statusCode != 200) throw ApiException();
 
     return JsonWebToken.fromJson(response.body);
@@ -35,7 +50,6 @@ class RemoteApiImpl implements RemoteApi {
       },
     );
     if (response.statusCode != 200) throw ApiException();
-
     return VerificationCode.fromJson(response.body);
   }
 }

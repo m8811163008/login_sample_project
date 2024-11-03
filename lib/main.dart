@@ -7,10 +7,12 @@ import 'package:login_sample_project/repository.dart/login_repostiory.dart';
 
 void main() {
   Bloc.observer = LoginAppBlocObserver();
-  runApp(RepositoryProvider(
-    create: (context) => LoginRepository(
-      remoteApi: RemoteApi(),
+  runApp(
+    RepositoryProvider(
+      create: (context) => LoginRepository(
+        remoteApi: RemoteApi(),
+      ),
+      child: const LoginApp(),
     ),
-    child: const LoginApp(),
-  ));
+  );
 }

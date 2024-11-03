@@ -2,8 +2,9 @@ import 'dart:convert';
 
 class PhoneNumberRequest {
   final int phoneNumber;
+  final int? verificationCode;
 
-  PhoneNumberRequest({required this.phoneNumber});
+  PhoneNumberRequest({required this.phoneNumber, this.verificationCode});
 
   Map<String, dynamic> toMap() => {
         'contact_info': '+$phoneNumber',
@@ -16,7 +17,8 @@ class PhoneNumberRequest {
           "app_version": "2.0.0",
           "is_active": true,
           "notifications_enabled": true
-        }
+        },
+        if (verificationCode != null) 'code': verificationCode,
       };
 
   String toJson() => jsonEncode(toMap());

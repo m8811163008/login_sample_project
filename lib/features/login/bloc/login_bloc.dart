@@ -37,11 +37,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onVerificationCodeRequested(
       VerificationCodeRequested event, Emitter<LoginState> emit) {
     if (state.phoneNumber.isValid) {
-      _loginRepository.fetchVericationCode(
-        int.parse(
-          state.phoneNumber.value,
-        ),
-      );
+      emit(state.copyWith(phoneNumberStatus: FormzSubmissionStatus.inProgress));
+      try {
+        _loginRepository.fetchVericationCode(
+          int.parse(
+            state.phoneNumber.value,
+          ),
+        );
+        emit(
+          state.copyWith(phoneNumberStatus: FormzSubmissionStatus.success),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(phoneNumberStatus: FormzSubmissionStatus.failure),
+        );
+      }
     }
   }
 }
