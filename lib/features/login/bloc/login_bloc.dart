@@ -18,6 +18,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           _onPhoneNumberChanged(event, emit);
         } else if (event is VerificationCodeRequested) {
           _onVerificationCodeRequested(event, emit);
+        } else if (event is VerificationCodeChanged) {
+          _onVerificationCodeChanged(event, emit);
         }
       },
     );
@@ -50,6 +52,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } catch (e) {
         emit(
           state.copyWith(phoneNumberStatus: FormzSubmissionStatus.failure),
+        );
+      }
+    }
+  }
+
+  void _onVerificationCodeChanged(
+      VerificationCodeChanged event, Emitter<LoginState> emit) {
+    if (state.verificationNumber.isValid) {
+      emit(state.copyWith(
+          phoneNumberVerificationNumber: FormzSubmissionStatus.inProgress));
+      try {
+        _loginRepository.fetchJsonWebToken(
+          vericationCode: int.parse(
+            state.verificationNumber.value,
+          ),
+          phoneNumber: int.parse(
+            state.verificationNumber.value,
+          ),
+        );
+        emit(
+          state.copyWith(
+              phoneNumberVerificationNumber: FormzSubmissionStatus.success),
+        );
+      } catch (e) {
+        emit(
+          state.copyWith(
+              phoneNumberVerificationNumber: FormzSubmissionStatus.failure),
         );
       }
     }

@@ -22,6 +22,16 @@ final class VerificationCodeRequested extends LoginEvent {
   VerificationCodeRequested();
 }
 
+final class VerificationCodeChanged extends LoginEvent {
+  final String verificationCode;
+
+  VerificationCodeChanged({required this.verificationCode});
+
+  @override
+  String toString() =>
+      'VerificationCodeRequest(verificationCode: $verificationCode)';
+}
+
 final class JsonWebTokenRequested extends LoginEvent {
   JsonWebTokenRequested();
 }

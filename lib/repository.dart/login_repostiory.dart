@@ -10,7 +10,8 @@ class LoginRepository {
   Future<VerificationCode> fetchVericationCode(int phoneNumber) =>
       remoteApi.fetchVericationCode(phoneNumber);
 
-  Future<JsonWebToken> fetchJsonWebToken(int vericationCode, int phoneNumber) =>
+  Future<JsonWebToken> fetchJsonWebToken(
+          {required int vericationCode, required int phoneNumber}) =>
       remoteApi.fetchJsonWebToken(
         verificationCode: vericationCode,
         phoneNumber: phoneNumber,

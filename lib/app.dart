@@ -10,8 +10,9 @@ class LoginApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        Routes.loginRoutePhoneInput: (context) => const LoginScreenPhoneInput(),
-        Routes.loginRouteVerify: (context) => const LoginScreenVerify(),
+        Routes.loginRoutePhoneInput: (context) =>
+            const LoginScreenPhoneInputRoute(),
+        Routes.loginRouteVerify: (context) => const LoginScreenVerifyRoute(),
         Routes.homeRoute: (context) => const HomeScreen(),
       },
     );
